@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/camera_surface_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:padding="10dp">
+    <ImageView
+        android:id="@+id/edit_picture_im"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <com.jgo.ocrscanner.View.CropView
+        android:id="@+id/edit_picture_layout"
+        android:layout_alignStart="@+id/edit_picture_im"
+        android:layout_alignTop="@+id/edit_picture_im"
+        android:layout_alignEnd="@+id/edit_picture_im"
+        android:layout_alignBottom="@+id/edit_picture_im"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

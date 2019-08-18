@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <SurfaceView
-        android:id="@+id/camera_surface_view"
+    <FrameLayout
+        android:id="@+id/camera_surface_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+        android:layout_height="match_parent">
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
