@@ -35,7 +35,7 @@ public class TessDataManager {
 
     private static boolean initiated;
 
-    public static void initTessTrainedData(Context context){
+    /*public static void initTessTrainedData(Context context){
 
         if(initiated){
             return;
@@ -81,9 +81,9 @@ public class TessDataManager {
         else{
             initiated = true;
         }
-    }
+    }*/
 
-    private static byte[] readRawTrainingData(Context context){
+    /*private static byte[] readRawTrainingData(Context context){
 
         try {
             InputStream fileInputStream = context.getResources()
@@ -111,6 +111,6 @@ public class TessDataManager {
         }
 
         return null;
-    }
+    }*/
 
 }

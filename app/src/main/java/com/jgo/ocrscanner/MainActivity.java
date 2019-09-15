@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.jgo.ocrscanner.fragment.EditPictureFragment;
 import com.jgo.ocrscanner.fragment.TakePictureFragment;
@@ -18,10 +19,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Take
     private static final int TAKE_PIC_MODE = 1;
     private static final int EDIT_PIC_MODE = 2;
 
-    private Button mTakePicBtn;
+    private Button mTakePictureBtn;
     private FrameLayout mTakePictureLayout;
+    private FrameLayout mTakePicToolLayout;
+    private RelativeLayout mEditPicToolLayout;
     private TakePictureFragment mTakePictureFragment;
     private EditPictureFragment mEditPictureFragment;
+
+    private Button mSaveEditBtn;
 
     private int mMode;
 
@@ -31,10 +36,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Take
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        mTakePicBtn = findViewById(R.id.take_picture_bt);
-        mTakePicBtn.setOnClickListener(this);
-
         mTakePictureLayout = findViewById(R.id.camera_surface_layout);
+        mTakePictureBtn = findViewById(R.id.take_picture_bt);
+        mTakePictureBtn.setOnClickListener(this);
+
+        mTakePicToolLayout = findViewById(R.id.take_layout);
+        mEditPicToolLayout = findViewById(R.id.edit_layout);
+
+        mSaveEditBtn = findViewById(R.id.save_edit_btn);
+        mSaveEditBtn.setOnClickListener(this);
 
         mEditPictureFragment = new EditPictureFragment();
 
@@ -51,6 +61,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Take
                     mTakePictureFragment.takePicture();
                 }
                 break;
+
+            case R.id.save_edit_btn :
+                if (mEditPictureFragment != null) {
+                    mEditPictureFragment.cropPicture();
+                }
         }
 
     }
@@ -74,9 +89,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Take
         switch (mode) {
             case TAKE_PIC_MODE :
                 getFragmentManager().beginTransaction().replace(R.id.camera_surface_layout, mTakePictureFragment, "TakePictureFragment").commit();
+                mEditPicToolLayout.setVisibility(View.GONE);
+                mTakePicToolLayout.setVisibility(View.VISIBLE);
                 break;
             case EDIT_PIC_MODE:
                 getFragmentManager().beginTransaction().replace(R.id.camera_surface_layout, mEditPictureFragment, "EditPictureFragment").commit();
+                mTakePicToolLayout.setVisibility(View.GONE);
+                mEditPicToolLayout.setVisibility(View.VISIBLE);
                 break;
         }
     }

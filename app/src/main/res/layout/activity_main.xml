@@ -1,28 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/picture_tool_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:background="@color/dim_grey">
+
+        <FrameLayout
+            android:id="@+id/take_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/layout_margin_8"
+            android:background="@drawable/circle_bg" >
+            <Button
+                android:id="@+id/take_picture_bt"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/camera_btn"/>
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/edit_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/layout_margin_8"
+             >
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/cancel"/>
+
+            <Button
+                android:id="@+id/save_edit_btn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/check_circle"/>
+        </RelativeLayout>
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/camera_surface_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent">
-
-        <Button
-            android:id="@+id/take_picture_bt"
-            android:text="@string/take_photos"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </RelativeLayout>
+        android:layout_above="@id/picture_tool_layout">
+    </FrameLayout>
 
     <!--<RelativeLayout
         android:layout_width="match_parent"
@@ -63,4 +95,4 @@
             android:layout_height="wrap_content"/>
 
     </RelativeLayout>-->
-</FrameLayout>
+</RelativeLayout>

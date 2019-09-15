@@ -22,7 +22,7 @@ public class TessManager {
     private TessBaseAPI mTessBaseAPI;
 
     private TessManager(Context context){
-        TessDataManager.initTessTrainedData(context);
+        //TessDataManager.initTessTrainedData(context);
         mTessBaseAPI = new TessBaseAPI();
         //mTessBaseAPI.setDebug(true);
         mTessBaseAPI.init(TessDataManager.getTesseractFolder(), "jpn");
