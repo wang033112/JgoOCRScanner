@@ -3,6 +3,7 @@ package com.jgo.ocrscanner.fragment;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.jgo.ocrscanner.R;
+import com.jgo.ocrscanner.View.CropView;
+import com.jgo.ocrscanner.utils.ScreenUtils;
 
 /**
  * Created by ke-oh on 2019/08/18.
@@ -28,6 +31,7 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
 
     private Bitmap mEditBitmap;
     private ImageView mEditImageView;
+    private CropView mCropView;
 
     @Nullable
     @Override
@@ -47,34 +51,55 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
         if (mEditBitmap != null) {
             mEditImageView.setImageBitmap(mEditBitmap);
         }
+
+        mCropView = view.findViewById(R.id.crop_picture_view);
     }
 
     public void cropPicture() {
-        Log.d(TAG, "mEditImageView.getWidth() : " + mEditImageView.getWidth() + ", mEditImageView.getHeight() : " + mEditImageView.getHeight());
-        //Bitmap bitmap = ((BitmapDrawable)mEditImageView.getDrawable()).getBitmap();
-        //bitmap = Bitmap.createBitmap(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
-        //Log.d(TAG, "bitmap.getWidth() : " + bitmap.getWidth() + ", bitmap.getHeight() : " + bitmap.getHeight());
 
         //getBitmap
         mEditImageView.setImageBitmap(getBitmap());
-        //mEditBitmap = Bitmap.createBitmap(mEditBitmap, mEditBitmap.getWidth() / 2, mEditBitmap.getHeight() / 2, mEditBitmap.getWidth() / 2, mEditBitmap.getHeight() / 2);
-        //mEditImageView.setImageBitmap(mEditBitmap);
+        mCropView.setVisibility(View.GONE);
     }
 
     private Bitmap getBitmap() {
         Drawable drawable = mEditImageView.getDrawable();
         Bitmap bitmap = Bitmap.createBitmap(
-                //drawable.getIntrinsicWidth(),
                 mEditImageView.getWidth(),
-                mEditImageView.getMaxHeight(),
+                mEditImageView.getHeight(),
                 drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
                         : Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
-        //canvas.setBitmap(bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         drawable.draw(canvas);
 
-        bitmap = Bitmap.createBitmap(mEditBitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+
+        float[] values = new float[9];
+
+        Matrix matrix = mEditImageView.getImageMatrix();
+        matrix.getValues(values);
+
+
+        // Extract the scale values using the constants (if aspect ratio maintained, scaleX == scaleY)
+        final float scaleX = values[Matrix.MSCALE_X];
+        final float scaleY = values[Matrix.MSCALE_Y];
+
+        // Get the drawable (could also get the bitmap behind the drawable and getWidth/getHeight)
+        //final int origW = mEditImageView.getDrawable().getIntrinsicWidth();
+        //final int origH = mEditImageView.getDrawable().getIntrinsicHeight();
+
+        // Calculate the actual dimensions
+        final int actW = Math.round(mEditBitmap.getWidth() * scaleX);
+        final int actH = Math.round(mEditBitmap.getHeight() * scaleY);
+
+        int startX = (int)mCropView.getLeftTopPoint().x - (int)(values[2]);
+        if (startX < 0) startX = 0;
+        int startY = (int)mCropView.getLeftTopPoint().y - (int)(values[5]);
+        if (startY < 0) startY = 0;
+        int cropWidth = (int)mCropView.getRightTopPoint().x - startX;
+        int cropHeight = (int)mCropView.getLeftBottomPoint().y - startY;
+
+        bitmap = Bitmap.createBitmap(mEditBitmap, startX, startY, cropWidth, (int)(cropHeight / scaleY));
         return bitmap;
     }
 
@@ -93,5 +118,28 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
     @Override
     public void onFailed() {
 
+    }
+
+    private int[] getBitmapOffset(ImageView imageView, boolean includeLayout) {
+        int[] offset = new int[2];
+        float[] values = new float[9];
+
+        Matrix matrix = imageView.getImageMatrix();
+        matrix.getValues(values);
+
+        // x方向上的偏移量(单位px)
+        offset[0] = (int) values[2];
+        // y方向上的偏移量(单位px)
+        offset[1] = (int) values[5];
+
+        if (includeLayout) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) imageView.getLayoutParams();
+            int paddingTop = imageView.getPaddingTop();
+            int paddingLeft = imageView.getPaddingLeft();
+
+            offset[0] += paddingLeft + params.leftMargin;
+            offset[1] += paddingTop + params.topMargin;
+        }
+        return offset;
     }
 }

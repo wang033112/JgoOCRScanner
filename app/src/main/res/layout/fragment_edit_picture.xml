@@ -8,19 +8,18 @@
     <FrameLayout
         android:id="@+id/camera_surface_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@color/colorAccent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/edit_picture_im"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"/>
+            android:scaleType="center"
+            android:background="@color/colorAccent"/>
     </FrameLayout>
 
     <com.jgo.ocrscanner.View.CropView
-        android:id="@+id/edit_picture_layout"
+        android:id="@+id/crop_picture_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignStart="@+id/camera_surface_view"

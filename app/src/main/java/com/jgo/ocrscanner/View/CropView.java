@@ -114,16 +114,6 @@ public class CropView extends FrameLayout {
         mPaint.setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
         mPaint.setStyle(Paint.Style.FILL);
 
-        //canvas.drawBitmap(mBackgroudBitmap, 0, 0, mPaint);
-        //topLine
-        /*canvas.drawLine(mLeftTopPoint.x, mLeftTopPoint.y, mRightTopPoint.x, mRightTopPoint.y, mPaint);
-        //rightLine
-        canvas.drawLine(mRightTopPoint.x, mRightTopPoint.y, mRightBottomPoint.x, mRightBottomPoint.y, mPaint);
-        //bottomLine
-        canvas.drawLine(mRightBottomPoint.x, mRightBottomPoint.y, mLeftBottomPoint.x, mLeftBottomPoint.y, mPaint);
-        //leftLine
-        canvas.drawLine(mLeftBottomPoint.x, mLeftBottomPoint.y, mLeftTopPoint.x, mLeftTopPoint.y, mPaint);*/
-
         mCropPath.reset();
         mCropPath.moveTo(mLeftTopPoint.x, mLeftTopPoint.y);
         mCropPath.lineTo(mRightTopPoint.x, mRightTopPoint.y);
@@ -284,7 +274,7 @@ public class CropView extends FrameLayout {
         }
     }
 
-    private class CropPoint {
+    public class CropPoint {
         public float x;
         public float y;
 
@@ -321,5 +311,21 @@ public class CropView extends FrameLayout {
             this.y += diffY;
         }
 
+    }
+
+    public CropPoint getLeftTopPoint() {
+        return mLeftTopPoint;
+    }
+
+    public CropPoint getRightTopPoint() {
+        return mRightTopPoint;
+    }
+
+    public CropPoint getLeftBottomPoint() {
+        return mLeftBottomPoint;
+    }
+
+    public CropPoint getRightBottomPoint() {
+        return mRightBottomPoint;
     }
 }

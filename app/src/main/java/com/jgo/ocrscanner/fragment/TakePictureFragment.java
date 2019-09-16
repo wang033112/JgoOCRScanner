@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.jgo.ocrscanner.R;
+import com.jgo.ocrscanner.utils.ScreenUtils;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class TakePictureFragment extends Fragment implements View.OnClickListene
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
-    ///为了使照片竖直显示
+    ///
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
         ORIENTATIONS.append(Surface.ROTATION_90, 0);
@@ -99,18 +100,18 @@ public class TakePictureFragment extends Fragment implements View.OnClickListene
 
     private void initCamera() {
         mCameraID = String.valueOf(CameraCharacteristics.LENS_FACING_FRONT);
-        mImageReader = ImageReader.newInstance(1080, 1920, ImageFormat.JPEG, 1);
+        mImageReader = ImageReader.newInstance(ScreenUtils.getScreenWidth(getActivity()),
+                ScreenUtils.getScreenHeight(getActivity()), ImageFormat.JPEG, 1);
         mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader reader) {
                 mCameraDevice.close();
                 mSurfaceView.setVisibility(View.GONE);
-                //iv_show.setVisibility(View.VISIBLE);
-                // 拿到拍照照片数据
+
                 Image image = reader.acquireNextImage();
                 ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                 byte[] bytes = new byte[buffer.remaining()];
-                buffer.get(bytes);//由缓冲区存入字节数组
+                buffer.get(bytes);//
                 final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                 if (mOnTakePictureListener != null) {
@@ -122,13 +123,13 @@ public class TakePictureFragment extends Fragment implements View.OnClickListene
                 }
             }
         }, mainHandler);
-        //获取摄像头管理
+        //
         mCameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
         try {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
-            //打开摄像头
+            //
             mCameraManager.openCamera(mCameraID, stateCallback, mainHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();

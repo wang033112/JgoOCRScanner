@@ -17,7 +17,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 获取屏幕宽度
+     * get screen width
      *
      * @return
      */
@@ -27,7 +27,7 @@ public class ScreenUtils {
     }
 
     /**
-     * 获取屏幕高度
+     * get screen height
      *
      * @return
      */
