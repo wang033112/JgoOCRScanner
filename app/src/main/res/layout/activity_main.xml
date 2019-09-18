@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/dim_grey">
 
     <RelativeLayout
         android:id="@+id/picture_tool_layout"
@@ -11,20 +12,28 @@
         android:gravity="center_horizontal"
         android:background="@color/dim_grey">
 
-        <FrameLayout
-            android:id="@+id/take_layout"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:padding="@dimen/layout_margin_8"
-            android:background="@drawable/circle_bg" >
-            <Button
-                android:id="@+id/take_picture_bt"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@drawable/camera_btn"/>
-        </FrameLayout>
+            android:layout_height="match_parent"
+            android:background="@color/dim_grey"
+            android:orientation="vertical"
+            android:gravity="center">
+            <FrameLayout
+                android:id="@+id/take_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/layout_margin_8"
+                android:background="@drawable/circle_bg"
+                android:visibility="visible">
+                <Button
+                    android:id="@+id/take_picture_bt"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/camera_btn"/>
+            </FrameLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/edit_layout"
@@ -32,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:padding="@dimen/layout_margin_8"
-             >
+            android:visibility="gone">
             <Button
                 android:id="@+id/cancel_btn"
                 android:layout_width="80dp"
@@ -53,7 +62,8 @@
         android:id="@+id/camera_surface_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/picture_tool_layout">
+        android:layout_above="@id/picture_tool_layout"
+        android:background="@color/dim_grey">
     </FrameLayout>
 
     <!--<RelativeLayout
