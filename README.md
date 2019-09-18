@@ -4,7 +4,7 @@ Japanese OCR
 APK</BR>
 https://github.com/wang033112/JgoOCRScanner/blob/master/readme/jgoOCRScanner.apk
 
-2_DisplayPicture</BR>
+1_TakePicture</BR>
 ![image](https://github.com/wang033112/JgoOCRScanner/blob/master/readme/1_TakePicture.png)
 
 2_DisplayPicture</BR>
