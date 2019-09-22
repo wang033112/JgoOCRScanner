@@ -21,6 +21,7 @@ import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -100,8 +101,8 @@ public class TakePictureFragment extends Fragment implements View.OnClickListene
 
     private void initCamera() {
         mCameraID = String.valueOf(CameraCharacteristics.LENS_FACING_FRONT);
-        mImageReader = ImageReader.newInstance(ScreenUtils.getScreenWidth(getActivity()),
-                ScreenUtils.getScreenHeight(getActivity()), ImageFormat.JPEG, 1);
+        mImageReader = ImageReader.newInstance(ScreenUtils.getScreenHeight(getActivity()),
+                ScreenUtils.getScreenWidth(getActivity()), ImageFormat.JPEG, 1);
         mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader reader) {
@@ -196,6 +197,7 @@ public class TakePictureFragment extends Fragment implements View.OnClickListene
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             mIsSurfaceCreated = true;
+            holder.setFixedSize(ScreenUtils.getScreenHeight(getActivity()), ScreenUtils.getScreenWidth(getActivity()));
             initCamera();
         }
 

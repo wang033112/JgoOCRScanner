@@ -143,7 +143,7 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
         int cropWidth = (int)mCropView.getRightTopPoint().x - startX;
         int cropHeight = (int)mCropView.getLeftBottomPoint().y - startY;
 
-        bitmap = Bitmap.createBitmap(mEditBitmap, startX, startY, cropWidth, (int)(cropHeight / scaleY));
+        bitmap = Bitmap.createBitmap(mEditBitmap, (int)(startX / scaleX), (int)(startY / scaleY), (int)(cropWidth / scaleX), (int)(cropHeight / scaleY));
         return bitmap;
     }
 
