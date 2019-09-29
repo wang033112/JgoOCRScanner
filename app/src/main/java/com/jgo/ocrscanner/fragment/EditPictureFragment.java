@@ -1,5 +1,8 @@
 package com.jgo.ocrscanner.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -63,14 +67,8 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
 
         mEditImageView = view.findViewById(R.id.edit_picture_im);
         if (mEditBitmap != null) {
-
-            ViewGroup.LayoutParams layoutParams = mEditImageView.getLayoutParams();
-            layoutParams.width = mEditBitmap.getWidth() * 5 / 6 ;
-            layoutParams.height = mEditBitmap.getHeight() * 5 / 6;
-
-            mEditImageView.setLayoutParams(layoutParams);
+            setImageViewLayout(mEditBitmap.getWidth() * 5 / 6, mEditBitmap.getHeight() * 5 / 6);
             mEditImageView.setImageBitmap(mEditBitmap);
-
         }
 
         mCropView = view.findViewById(R.id.crop_picture_view);
@@ -86,15 +84,24 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
 
     }
 
-    public void cropPicture() {
+    private void setImageViewLayout(int width, int height) {
+        ViewGroup.LayoutParams layoutParams = mEditImageView.getLayoutParams();
+        layoutParams.width = width ;
+        layoutParams.height = height;
+        mEditImageView.setLayoutParams(layoutParams);
+    }
 
+    /**
+     * Crop the picture
+     */
+    public void cropPicture() {
         if (mIsShowResultBmp) {
             return;
         }
-
         //getBitmap
+        setImageViewLayout(mEditBitmap.getWidth() * 5 /6 , mEditBitmap.getHeight() / 2);
         final Bitmap cropBitmap = getBitmap();
-        mEditImageView.setImageBitmap(cropBitmap);
+        mEditImageView.setImageBitmap(ScreenUtils.gray2Binary(cropBitmap));
         mCropView.setVisibility(View.GONE);
         mIsShowResultBmp = true;
         mDetectingPb.setVisibility(View.VISIBLE);
@@ -106,9 +113,7 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
                 mUIHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mDetectingPb.setVisibility(View.GONE);
-                        mDetectResultLayout.setVisibility(View.VISIBLE);
-                        mDetectResultTV.setText(detectResult);
+                        showResult(detectResult);
                     }
                 });
             }
@@ -162,5 +167,35 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
     @Override
     public void onFailed() {
 
+    }
+
+    /**
+     *
+     */
+    private void showResult(final String detectResult) {
+        mDetectingPb.setVisibility(View.GONE);
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mDetectResultLayout, View.TRANSLATION_Y, ScreenUtils.dip2px(400), 0);
+        animator.addListener(new AnimatorListenerAdapter() {
+            /*@Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+
+            }*/
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mDetectResultLayout.setVisibility(View.VISIBLE);
+                mDetectResultTV.setText(detectResult);
+            }
+        });
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(500);
+        animator.start();
+    }
+
+    public void resetEdit() {
+        mIsShowResultBmp = false;
     }
 }

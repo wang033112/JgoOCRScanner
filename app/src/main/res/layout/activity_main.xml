@@ -41,20 +41,38 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:padding="@dimen/layout_margin_8"
-            android:visibility="gone">
-            <Button
-                android:id="@+id/cancel_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_alignParentStart="true"
-                android:background="@drawable/cancel"/>
+            android:visibility="visible">
 
-            <Button
-                android:id="@+id/save_edit_btn"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <FrameLayout
+                android:id="@+id/cancel_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_bg"
+                android:layout_alignParentStart="true"
+                android:visibility="visible">
+                <Button
+                    android:id="@+id/cancel_btn"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/cancel"/>
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:id="@+id/save_edit_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_bg"
                 android:layout_alignParentEnd="true"
-                android:background="@drawable/check_circle"/>
+                android:visibility="visible">
+                <Button
+                    android:id="@+id/save_edit_btn"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/check_circle"/>
+            </FrameLayout>
+
         </RelativeLayout>
     </RelativeLayout>
 

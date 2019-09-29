@@ -36,6 +36,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Take
     private EditPictureFragment mEditPictureFragment;
 
     private Button mSaveEditBtn;
+    private Button mCancelBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Take
 
         mSaveEditBtn = findViewById(R.id.save_edit_btn);
         mSaveEditBtn.setOnClickListener(this);
+
+        mCancelBtn = findViewById(R.id.cancel_btn);
+        mCancelBtn.setOnClickListener(this);
 
         mEditPictureFragment = new EditPictureFragment();
 
@@ -118,6 +122,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Take
                 if (mEditPictureFragment != null) {
                     mEditPictureFragment.cropPicture();
                 }
+                break;
+            case R.id.cancel_btn:
+                if (mEditPictureFragment != null) {
+                    mEditPictureFragment.resetEdit();
+                }
+                setMode(TAKE_PIC_MODE);
+                break;
         }
 
     }
