@@ -55,7 +55,11 @@ public class ScreenUtils {
         int width = targetMap.getWidth();
         int height = targetMap.getHeight();
 
+        int amount = 0;
+        int count = 0;
         Bitmap convertMap = targetMap.copy(Bitmap.Config.ARGB_8888, true);
+        int[][] alphas = new int[width][height];
+        int[][] colors = new int[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
 
@@ -68,17 +72,30 @@ public class ScreenUtils {
 
                 //X = 0.3×R+0.59×G+0.11×B
                 int gray = (int) ((float) red * 0.3 + (float) green * 0.59 + (float) blue * 0.11);
+                colors[i][j] = gray;
+                alphas[i][j] = alpha;
+                amount += gray;
+                count ++;
 
-                if (gray <= 127) {
-                    gray = 0;
-                } else {
-                    gray = 255;
-                }
-
-                int newColor = alpha | (gray << 16) | (gray << 8) | gray;
-                convertMap.setPixel(i, j, newColor);
             }
         }
+
+        if (amount > 0 && count > 0) {
+            int average = amount / count;
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    int col = colors[i][j];
+                    if (col <= average) {
+                        col = 0;
+                    } else {
+                        col = 255;
+                    }
+                    int newColor = alphas[i][j] | (col << 16) | (col << 8) | col;
+                    convertMap.setPixel(i, j, newColor);
+                }
+            }
+        }
+
         return convertMap;
     }
 }
